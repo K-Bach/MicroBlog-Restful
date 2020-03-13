@@ -5,7 +5,7 @@
  */
 package bachir.microblog.restful.dao;
 
-import bachir.microblog.restful.domain.BlogUser;
+import bachir.microblog.restful.domain.User;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -16,29 +16,29 @@ import javax.persistence.TypedQuery;
  *
  * @author Bachir_Karim
  */
-public class BlogUserDao
+public class UserDao
 {
 
     private final EntityManager em;
     String PERSISTENCE_UNIT_NAME = "persistence";
 
-    public BlogUserDao()
+    public UserDao()
     {
         this.em = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME)
                 .createEntityManager();
     }
 
-    public List<BlogUser> findAll()
+    public List<User> findAll()
     {
         /* 
         https://docs.oracle.com/javaee/6/tutorial/doc/bnbrg.html       
          */
-        TypedQuery<BlogUser> typedQuery = em.createQuery("SELECT B FROM BlogUser B", BlogUser.class);
-        List<BlogUser> userList = typedQuery.getResultList();
+        TypedQuery<User> typedQuery = em.createQuery("SELECT U FROM USER U", User.class);
+        List<User> userList = typedQuery.getResultList();
         return userList;
     }
 
-    public boolean insertUser( BlogUser b )
+    public boolean insertUser( User b )
     {
         em.getTransaction().begin();
         try
@@ -65,7 +65,7 @@ public class BlogUserDao
 
     public boolean findUser( String name, String password )
     {
-        List<BlogUser> userList = em.createQuery("SELECT B FROM BlogUser B WHERE B.name LIKE :name AND B.password LIKE :password", BlogUser.class
+        List<User> userList = em.createQuery("SELECT U FROM USER U WHERE U.name LIKE :name AND U.password LIKE :password", User.class
         ).setParameter("name", name).setParameter("password", password).getResultList();
         return !userList.isEmpty();
 
@@ -73,8 +73,8 @@ public class BlogUserDao
 
     public boolean findUserByName( String name )
     {
-        TypedQuery<BlogUser> typedQuery = em.createQuery("SELECT B FROM BlogUser B WHERE B.name LIKE :name", BlogUser.class);
-        List<BlogUser> userList = typedQuery.setParameter("name", name).getResultList();
+        TypedQuery<User> typedQuery = em.createQuery("SELECT U FROM USER U WHERE U.name LIKE :name", User.class);
+        List<User> userList = typedQuery.setParameter("name", name).getResultList();
         return !userList.isEmpty();
 
     }

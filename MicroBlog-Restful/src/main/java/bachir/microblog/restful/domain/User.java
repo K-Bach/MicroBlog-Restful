@@ -10,7 +10,7 @@ import javax.persistence.Id;
  * @author Bachir_Karim
  */
 @Entity
-public class BlogUser
+public class User
 {
 
     @Id
@@ -23,11 +23,11 @@ public class BlogUser
     @Basic
     private String password;
 
-    public BlogUser()
+    public User()
     {
     }
 
-    public BlogUser( String name, String password )
+    public User( String name, String password )
     {
         this.name = name;
         this.password = password;

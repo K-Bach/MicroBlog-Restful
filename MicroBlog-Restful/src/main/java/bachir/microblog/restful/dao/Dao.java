@@ -20,7 +20,7 @@ public class Dao
     private final EntityManager em = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME)
             .createEntityManager();
     private static PostDao postDao = new PostDao();
-    private static BlogUserDao userDao = new BlogUserDao();
+    private static UserDao userDao = new UserDao();
     private static CommentDao commentDAO = new CommentDao();
 
     public static CommentDao getCommentDAO()
@@ -33,7 +33,7 @@ public class Dao
         return Dao.postDao;
     }
 
-    public static BlogUserDao getUserDao()
+    public static UserDao getUserDao()
     {
         return Dao.userDao;
     }
