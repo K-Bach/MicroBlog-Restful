@@ -16,8 +16,7 @@ function showUsersList(address) {
             
             visualUsersJson(this.responseText);
 
-        } else
-            document.getElementById("risultato").innerHTML = "doing..";
+        }
 
     }
     xmlhttp.open("GET", address, true);
@@ -57,9 +56,7 @@ function showPostsList(address) {
             
             visualPostsJson(this.responseText);
 
-        } else
-            document.getElementById("risultato").innerHTML = "doing..";
-
+        }
     }
     xmlhttp.open("GET", address, true);
     xmlhttp.send();
@@ -94,13 +91,13 @@ function showCommentsList(address) {
     }
 
     xmlhttp.onreadystatechange = function () {
+        
         document.getElementById("risultato").innerHTML = "doing..";
         if (this.readyState == 4 && this.status == 200) {
             
             visualCommentsJson(this.responseText);
 
-        } else
-            document.getElementById("risultato").innerHTML = "doing..";
+        }
 
     }
     xmlhttp.open("GET", address, true);
