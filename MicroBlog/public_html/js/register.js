@@ -19,6 +19,9 @@ function register(address) {
                     //var selfUrl = this.getResponseHeader("location");
                     var codice = 'Codice di risposta http: ' + parsedJson.server + '<br>';
                     var output = 'esito: ' + "utente registrato" + '<br>';
+                    document.getElementById("status").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">"
+                            + "Registered successfully!"
+                            + "</div>";
                     //var location = 'location: ' + selfUrl;
                     document.getElementById("risultato").innerHTML = codice + output;
                     break;

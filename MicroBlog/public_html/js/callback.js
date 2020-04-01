@@ -11,14 +11,14 @@ function showUsersList(address) {
 
     xmlhttp.onreadystatechange = function () {
         
-        document.getElementById("risultato").innerHTML = "doing..";
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             
+            document.getElementById("risultato").innerHTML = "doing..";
             visualUsersJson(this.responseText);
 
         }
 
-    }
+    };
     xmlhttp.open("GET", address, true);
     xmlhttp.send();
 }
@@ -51,13 +51,13 @@ function showPostsList(address) {
 
     xmlhttp.onreadystatechange = function () {
 
-        document.getElementById("risultato").innerHTML = "doing..";
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             
+            document.getElementById("risultato").innerHTML = "doing..";
             visualPostsJson(this.responseText);
 
         }
-    }
+    };
     xmlhttp.open("GET", address, true);
     xmlhttp.send();
 }
@@ -92,14 +92,14 @@ function showCommentsList(address) {
 
     xmlhttp.onreadystatechange = function () {
         
-        document.getElementById("risultato").innerHTML = "doing..";
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             
+            document.getElementById("risultato").innerHTML = "doing..";
             visualCommentsJson(this.responseText);
 
         }
 
-    }
+    };
     xmlhttp.open("GET", address, true);
     xmlhttp.send();
 }
