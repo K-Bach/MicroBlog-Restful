@@ -68,7 +68,7 @@ function checkPostPermission()
                 + '<div class="form-group ">'
                 + '<label for="postText">What do you want to write?</label>'
                 + '<textarea class="form-control" name="postText" id="postText" rows="3"></textarea>'
-                + '<input type="button" value="Post" onClick="createPost(\'http://localhost:8080/posts\')">'
+                + '<input type="button" value="Post" onClick="createPost(\'http://localhost:8080/posts/\')">'
                 + '</div>'
                 + '</form>';
     }

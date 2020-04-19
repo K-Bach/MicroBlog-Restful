@@ -18,7 +18,7 @@ function createPost(address) {
                     var output = 'esito: ' + "post creato" + '<br>';
                     //var location = 'location: ' + selfUrl;
                     document.getElementById("risultato").innerHTML = codice + output;
-                    showPostsList('http://localhost:8080/posts/');
+                    getPost(parsedJson.response);
                     break;
                 case 404:
                     document.getElementById("risultato").innerHTML = "Errore 404 ";
@@ -38,6 +38,64 @@ function createPost(address) {
     var post = JSON.stringify({"titolo": title, "autore": autore, "dataOra": date, "testo": postText});
     xmlhttp.setRequestHeader("Content-type", "application/json");
     xmlhttp.send(post);
+}
+
+function getPost(address) {
+
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {  // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xmlhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4 && this.status === 200) {
+
+            showPost(this.responseText);
+
+        }
+    };
+    xmlhttp.open("GET", address, true);
+    xmlhttp.send();
+}
+
+function showPost(json) {
+    var parsedJson = JSON.parse(json);
+    var httpCode = parsedJson.server;
+
+    var post = "";
+    var title = parsedJson.response.titolo;
+    var author = parsedJson.response.autore.username;
+    var date = parsedJson.response.dataOra;
+    var text = parsedJson.response.testo;
+    post +=   '<div class="container">'
+            + '<div class="row justify-content-center">'
+            + '<div class="col col-md-8">'
+            + '<div class="card text-center">'
+            + '<div class="card-header">'
+            + author
+            + '</div>'
+            + '<div class="card-body">'
+            + '<h5 class="card-title">'
+            + title
+            + '</h5>'
+            + '<p class="card-text">'
+            + text
+            + '</p>'
+            + '<a href="#" class="btn btn-primary">view comments</a>'
+            + '</div>'
+            + '<div class="card-footer text-muted">'
+            + date
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<hr>';
+    var posts = document.getElementById('posts');
+    posts.innerHTML += post;
 }
 
 function showPostsList(address) {
