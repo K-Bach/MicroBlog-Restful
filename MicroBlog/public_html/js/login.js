@@ -41,7 +41,7 @@ function visualJson(json) {
             else
                 setCookie("enablePost", "false", 1);
 
-            setCookie("userId", parsedJson.response, 1);
+            setCookie("userId", parsedJson.response.id, 1);
             location.assign("blog.html");
 
             break;
