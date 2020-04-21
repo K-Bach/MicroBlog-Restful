@@ -65,37 +65,27 @@ function showPost(json) {
     var parsedJson = JSON.parse(json);
     var httpCode = parsedJson.server;
 
-    var post = "";
+    var oldPosts = document.getElementById('posts');
+    var id = parsedJson.response.id;
     var title = parsedJson.response.titolo;
     var author = parsedJson.response.autore.username;
     var date = parsedJson.response.dataOra;
     var text = parsedJson.response.testo;
-    post +=   '<div class="container">'
-            + '<div class="row justify-content-center">'
-            + '<div class="col col-md-8">'
-            + '<div class="card text-center">'
-            + '<div class="card-header">'
-            + author
-            + '</div>'
-            + '<div class="card-body">'
-            + '<h5 class="card-title">'
-            + title
-            + '</h5>'
-            + '<p class="card-text">'
-            + text
-            + '</p>'
-            + '<a href="#" class="btn btn-primary">view comments</a>'
-            + '</div>'
-            + '<div class="card-footer text-muted">'
-            + date
-            + '</div>'
-            + '</div>'
-            + '</div>'
-            + '</div>'
-            + '</div>'
-            + '<hr>';
-    var posts = document.getElementById('posts');
-    posts.innerHTML += post;
+    
+    //document.getElementsByTagName("H1")[0].setAttribute("class", "democlass");
+    var postTemplateNodes = document.getElementById("templates").childNodes;
+    var clonedPost = postTemplateNodes[1].cloneNode(true);
+    var att = document.createAttribute("id");       // Create a "class" attribute
+    att.value = id;                           // Set the value of the class attribute
+    clonedPost.setAttributeNode(att);   
+    clonedPost.getElementsByClassName("card-header")[0].innerHTML = author;
+    clonedPost.getElementsByClassName("card-title")[0].innerHTML = title;
+    clonedPost.getElementsByClassName("card-text")[0].innerHTML = text;
+    clonedPost.getElementsByClassName("card-footer")[0].innerHTML = date;
+    
+    oldPosts.insertBefore(clonedPost, oldPosts.firstChild);
+    //oldPosts.appendChild(clonedPost);
+    //document.getElementById("posts").innerHTML += postTemplate + oldPosts;
 }
 
 function showPostsList(address) {

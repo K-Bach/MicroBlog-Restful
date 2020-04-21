@@ -30,7 +30,7 @@ function visualJson(json) {
     var output = 'esito: ' + parsedJson.response;
     document.getElementById("risultato").innerHTML = codice + output;
     switch (parsedJson.server) {
-        case 302:
+        case 200:
 
             document.getElementById("status").innerHTML = "<div class=\"alert alert-success\" role=\"alert\">"
                     + "User found"
@@ -86,7 +86,7 @@ function getUserById(address) {
 
     xmlhttp.onreadystatechange = function () {
         
-        if (this.readyState === 4 && this.status === 302) {
+        if (this.readyState === 4 && this.status === 200) {
             
             setUserJson(this.responseText);
 
