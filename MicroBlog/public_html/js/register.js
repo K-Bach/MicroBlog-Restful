@@ -12,7 +12,7 @@ function register(address) {
     xmlhttp.onreadystatechange = function () {
 
         document.getElementById("risultato").innerHTML = "doing..";
-        if (this.readyState == 4) {
+        if (this.readyState === 4) {
             switch (this.status) {
                 case 201:
                     var parsedJson = JSON.parse(this.responseText);
@@ -34,7 +34,7 @@ function register(address) {
 
         }
 
-    }
+    };
     var username = document.formRegister.registerUsername.value;
     var password = document.formRegister.registerPassword.value;
     xmlhttp.open("POST", address, true);
