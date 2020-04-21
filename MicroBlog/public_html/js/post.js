@@ -72,7 +72,6 @@ function showPost(json) {
     var date = parsedJson.response.dataOra;
     var text = parsedJson.response.testo;
     
-    //document.getElementsByTagName("H1")[0].setAttribute("class", "democlass");
     var postTemplateNodes = document.getElementById("templates").childNodes;
     var clonedPost = postTemplateNodes[1].cloneNode(true);
     var att = document.createAttribute("id");       // Create a "class" attribute
@@ -84,8 +83,6 @@ function showPost(json) {
     clonedPost.getElementsByClassName("card-footer")[0].innerHTML = date;
     
     oldPosts.insertBefore(clonedPost, oldPosts.firstChild);
-    //oldPosts.appendChild(clonedPost);
-    //document.getElementById("posts").innerHTML += postTemplate + oldPosts;
 }
 
 function showPostsList(address) {
