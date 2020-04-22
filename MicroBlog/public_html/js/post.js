@@ -66,22 +66,30 @@ function showPost(json) {
     var httpCode = parsedJson.server;
 
     var oldPosts = document.getElementById('posts');
+    
+    //valori del post presi dal json
     var id = parsedJson.response.id;
     var title = parsedJson.response.titolo;
     var author = parsedJson.response.autore.username;
     var date = parsedJson.response.dataOra;
     var text = parsedJson.response.testo;
     
+    //clonazione del post template
     var postTemplateNodes = document.getElementById("templates").childNodes;
     var clonedPost = postTemplateNodes[1].cloneNode(true);
+    
+    //assegnazione dell'id del post al div
     var att = document.createAttribute("id");       // Create a "class" attribute
     att.value = id;                           // Set the value of the class attribute
     clonedPost.setAttributeNode(att);   
+    
+    //compilazione del post
     clonedPost.getElementsByClassName("card-header")[0].innerHTML = author;
     clonedPost.getElementsByClassName("card-title")[0].innerHTML = title;
     clonedPost.getElementsByClassName("card-text")[0].innerHTML = text;
     clonedPost.getElementsByClassName("card-footer")[0].innerHTML = date;
     
+    //caricamento del post nella pagina html
     oldPosts.insertBefore(clonedPost, oldPosts.firstChild);
 }
 
@@ -111,37 +119,33 @@ function visualPostsJson(json) {
     var httpCode = parsedJson.server;
 
     var posts = "";
-    for (i = 0; i < parsedJson.response.length; i++) {
+    for (i = parsedJson.response.length-1; i >= 0; i--) {
+        
+        //valori del post presi dal json
+        var id = parsedJson.response[i].id;
         var title = parsedJson.response[i].titolo;
         var author = parsedJson.response[i].autore.username;
         var date = parsedJson.response[i].dataOra;
         var text = parsedJson.response[i].testo;
-        posts += '<div class="container">'
-                + '<div class="row justify-content-center">'
-                + '<div class="col col-md-8">'
-                + '<div class="card text-center">'
-                + '<div class="card-header">'
-                + author
-                + '</div>'
-                + '<div class="card-body">'
-                + '<h5 class="card-title">'
-                + title
-                + '</h5>'
-                + '<p class="card-text">'
-                + text
-                + '</p>'
-                + '<a href="#" class="btn btn-primary">view comments</a>'
-                + '</div>'
-                + '<div class="card-footer text-muted">'
-                + date
-                + '</div>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-                + '<hr>';
+        
+        //clonazione del post template
+        var postTemplateNodes = document.getElementById("templates").childNodes;
+        var clonedPost = postTemplateNodes[1].cloneNode(true);
+        
+        //assegnazione dell'id del post al div
+        var att = document.createAttribute("id");       // Create a "class" attribute
+        att.value = id;                           // Set the value of the class attribute
+        clonedPost.setAttributeNode(att); 
+        
+        //compilazione del post
+        clonedPost.getElementsByClassName("card-header")[0].innerHTML = author;
+        clonedPost.getElementsByClassName("card-title")[0].innerHTML = title;
+        clonedPost.getElementsByClassName("card-text")[0].innerHTML = text;
+        clonedPost.getElementsByClassName("card-footer")[0].innerHTML = date;
+        
+        //caricamento del post nella pagina html
+        document.getElementById("posts").appendChild(clonedPost);
     }
-    document.getElementById("posts").innerHTML = posts;
 }
 
 function getCookie(cname) {
