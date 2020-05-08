@@ -1,6 +1,5 @@
 function register(address) {
-    document.getElementById("risultato-raw").innerHTML = "";
-    document.getElementById("risultato").innerHTML = "starting..";
+
 
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -11,7 +10,7 @@ function register(address) {
 
     xmlhttp.onreadystatechange = function () {
 
-        document.getElementById("risultato").innerHTML = "doing..";
+
         if (this.readyState === 4) {
             switch (this.status) {
                 case 201:
@@ -37,10 +36,39 @@ function register(address) {
     };
     var username = document.formRegister.registerUsername.value;
     var password = document.formRegister.registerPassword.value;
-    xmlhttp.open("POST", address, true);
-    var user = JSON.stringify({"username": username,
-        "password": password
-    });
-    xmlhttp.setRequestHeader("Content-type", "application/json");
-    xmlhttp.send(user);
+
+    let re = /[\s]/;
+    var resUsername = re.test(username);
+    var resPassword = re.test(password);
+
+    if (username === "")
+    {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                + "Username field  must not be null"
+                + "</div>";
+    } else if (password === "")
+    {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                + "Password field  must not be null"
+                + "</div>";
+    } else if (resUsername)
+    {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                + "Username field  must not contain space characters"
+                + "</div>";
+    } else if (resPassword)
+    {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                + "Password field  must not contain space characters"
+                + "</div>";
+    } else
+    {
+        document.getElementById("risultato-raw").innerHTML = "";
+        document.getElementById("risultato").innerHTML = "starting..";
+        xmlhttp.open("POST", address, true);
+        var user = JSON.stringify({"username": username,"password": password});
+        xmlhttp.setRequestHeader("Content-type", "application/json");
+        xmlhttp.send(user);
+        document.getElementById("risultato").innerHTML = "waiting response..";
+    }
 }
