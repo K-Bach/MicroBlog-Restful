@@ -18,9 +18,34 @@ function login() {
     };
     var username = document.formLogin.loginUsername.value;
     var password = document.formLogin.loginPassword.value;
-    var address = "http://localhost:8080/users?username=" + username + "&password=" + password;
-    xmlhttp.open("GET", address, true);
-    xmlhttp.send();
+    let re = /[\s]/;
+    var resUsername = re.test(username);
+    var resPassword = re.test(password);
+    if (username === "") {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                    + "Username field  must not be null"
+                    + "</div>";
+    }
+    else if (password === ""){
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                    + "Password field  must not be null"
+                    + "</div>";
+    }
+    else if (resUsername) {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                    + "Username field  must not contain space characters"
+                    + "</div>";
+    }
+    else if (resPassword){
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                    + "Password field  must not contain space characters"
+                    + "</div>";
+    }
+    else{
+        var address = "http://localhost:8080/users?username=" + username + "&password=" + password;
+        xmlhttp.open("GET", address, true);
+        xmlhttp.send();
+    }
 }
 
 function visualJson(json) {
