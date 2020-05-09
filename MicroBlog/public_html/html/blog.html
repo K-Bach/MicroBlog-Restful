@@ -36,7 +36,7 @@
                 -ms-transform: translate(-50%,-50%);
             }
         </style>
-        
+
         <!--verifica che l'utente sia loggato-->
         <script>
             var userId = getCookie("userId");
@@ -44,10 +44,11 @@
             {
                 location.assign("notLogged.html");
             }
+            
         </script>
-        
+
     </head>
-    
+
     <body onload="checkPostPermission();
             showPostsList('http://localhost:8080/posts/');">
         <div class="jumbotron jumbotron-fluid bg-info text-white text-center">
@@ -116,12 +117,12 @@
                                         text
                                     </p>
                                     <hr>
-                                    <form name="formPost" class="col-md">
+                                    <form name="formComment" class="col-md">
                                         <div class="form-group">
                                             <label for="inputComment" class="row">comment</label>
                                             <div class="row">
-                                                <input type="text" class="form-control col-9" name="text" id="inputComment" placeholder="nice post...">
-                                                <input type="button" value="submit" class="createComment btn btn-primary col-2 ml-auto" >
+                                                <input type="text" class="commenttext form-control col-9" name="text" id="inputComment" placeholder="nice post...">
+                                                <button type="submit" class="createComment btn btn-primary col-2 ml-auto" >submit</button>
                                             </div>
                                         </div>
                                     </form>

@@ -1,4 +1,4 @@
-function createComment (postId,form) {
+function createComment (postId) {
 
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -17,7 +17,7 @@ function createComment (postId,form) {
         }
 
     };
-    var commentText = form.text.value;
+    var commentText = document.getElementsByClassName("commenttext").value;
     var autore = {"id": Number(getCookie("userId"))};
     var post = {"id": Number(postId)};
     var date = new Date();

@@ -151,10 +151,12 @@ function getCommentsByPost(parsedPostJson, postId) {
             }
             //caricamento del post nella pagina html
             document.getElementById("overlay").appendChild(clonedPostWithComments);
-            var onclickAtt = document.createAttribute("onClick");       // Create a "id" attribute
-            onclickAtt.value = "createComment(" + id + ", this.form)";                           // Set the value of the id attribute
-            document.getElementsByClassName("createComment")[1].setAttributeNode(onclickAtt);
+            var actionAtt = document.createAttribute("action");    
+            actionAtt.value = "javascript:createComment(" + id + ");"; 
+            var form = document.getElementsByName("formComment")[1];
+            form.setAttributeNode(actionAtt); 
             document.getElementById("overlay").style.display = "block";
+            
 
         }
     };
