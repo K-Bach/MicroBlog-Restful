@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <script type="text/javascript" src="../js/login.js"></script>
         <script type="text/javascript" src="../js/post.js"></script>
+        <script type="text/javascript" src="../js/comment.js"></script>
         <title>MicroBlog Bachir</title>
         <style>
             #overlay {
@@ -23,7 +24,6 @@
                 bottom: 0;
                 background-color: rgba(0,0,0,0.9);
                 z-index: 2;
-                cursor: pointer;
             }
 
             #text{
@@ -36,9 +36,20 @@
                 -ms-transform: translate(-50%,-50%);
             }
         </style>
+        
+        <!--verifica che l'utente sia loggato-->
+        <script>
+            var userId = getCookie("userId");
+            if (!userId)
+            {
+                location.assign("notLogged.html");
+            }
+        </script>
+        
     </head>
-
-    <body onload="checkPostPermission();showPostsList('http://localhost:8080/posts/');">
+    
+    <body onload="checkPostPermission();
+            showPostsList('http://localhost:8080/posts/');">
         <div class="jumbotron jumbotron-fluid bg-info text-white text-center">
             <div class="container">
                 <h1 class="display-1">Welcome <span id="userwelcome"></span> to Bachirs Microblog</h1>
@@ -69,7 +80,6 @@
                                     <p class="card-text" style="text-align: left">
                                         text
                                     </p>
-                                    <div class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light" style="max-height: 500px;"></div>
                                     <button type="button" class="btn btn-primary">view comments</button>
                                 </div>
                                 <div class="card-footer text-muted">
@@ -88,6 +98,43 @@
                         <p class="card-text text" style="text-align: left">testo</p>
                     </div>
                 </div>
+            </div>
+            <div class="postWithComments">
+                <div class="container">
+                    <div id='postWithCommentsId' style="display: none;"></div>
+                    <div class="row justify-content-center">
+                        <div class="col col-md-8">
+                            <div class="card text-center">
+                                <div class="card-header"  style="text-align: left">
+                                    author
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        title
+                                    </h5>
+                                    <p class="card-text" style="text-align: left">
+                                        text
+                                    </p>
+                                    <hr>
+                                    <form name="formPost" class="col-md">
+                                        <div class="form-group">
+                                            <label for="inputComment" class="row">comment</label>
+                                            <div class="row">
+                                                <input type="text" class="form-control col-9" name="text" id="inputComment" placeholder="nice post...">
+                                                <input type="button" value="submit" class="createComment btn btn-primary col-2 ml-auto" >
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light border border-secondary rounded-top" style="max-height: 500px;"></div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    date
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
             </div>
         </div>
 

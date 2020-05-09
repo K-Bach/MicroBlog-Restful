@@ -1,4 +1,4 @@
-function createPost(address) {
+function createPost(address, form) {
 
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -30,8 +30,8 @@ function createPost(address) {
         }
 
     };
-    var title = document.formPost.title.value;
-    var postText = document.formPost.postText.value;
+    var title = form.title.value;
+    var postText = form.postText.value;
     var autore = {"id": Number(getCookie("userId"))};
     var date = new Date();
     xmlhttp.open("POST", address, true);
@@ -126,15 +126,13 @@ function getCommentsByPost(parsedPostJson, postId) {
 
             //clonazione del post template
             var templateNodes = document.getElementById("templates").childNodes;
-            var clonedPost = templateNodes[1].cloneNode(true);
+            var clonedPostWithComments = templateNodes[5].cloneNode(true);
 
             //compilazione del post
-            clonedPost.getElementsByClassName("card-header")[0].innerHTML = author;
-            clonedPost.getElementsByClassName("card-title")[0].innerHTML = title;
-            clonedPost.getElementsByClassName("card-text")[0].innerHTML = text;
-            clonedPost.getElementsByClassName("card-footer")[0].innerHTML = date;
-            var button = clonedPost.getElementsByClassName("btn btn-primary")[0];
-            button.remove();
+            clonedPostWithComments.getElementsByClassName("card-header")[0].innerHTML = author;
+            clonedPostWithComments.getElementsByClassName("card-title")[0].innerHTML = title;
+            clonedPostWithComments.getElementsByClassName("card-text")[0].innerHTML = text;
+            clonedPostWithComments.getElementsByClassName("card-footer")[0].innerHTML = date;
 
             for (i = parsedCommentsJson.response.length - 1; i >= 0; i--)
             {
@@ -144,17 +142,18 @@ function getCommentsByPost(parsedPostJson, postId) {
                 var testo = parsedCommentsJson.response[i].testo;
 
                 //clonazione del comment template
-                var templateNodes1 = document.getElementById("templates").childNodes;
-                var clonedComment = templateNodes1[3].cloneNode(true);
+                var clonedComment = templateNodes[3].cloneNode(true);
 
                 //compilazione del commento
                 clonedComment.getElementsByClassName("card-header")[0].innerHTML = autore;
                 clonedComment.getElementsByClassName("card-text")[0].innerHTML = testo;
-                clonedPost.getElementsByClassName("overflow-auto")[0].appendChild(clonedComment);
+                clonedPostWithComments.getElementsByClassName("overflow-auto")[0].appendChild(clonedComment);
             }
             //caricamento del post nella pagina html
-            document.getElementById("overlay").appendChild(clonedPost);
-
+            document.getElementById("overlay").appendChild(clonedPostWithComments);
+            var onclickAtt = document.createAttribute("onClick");       // Create a "id" attribute
+            onclickAtt.value = "createComment(" + id + ", this.form)";                           // Set the value of the id attribute
+            document.getElementsByClassName("createComment")[1].setAttributeNode(onclickAtt);
             document.getElementById("overlay").style.display = "block";
 
         }
@@ -185,9 +184,8 @@ function showPost(json) {
     att.value = id;                           // Set the value of the id attribute
     clonedPost.setAttributeNode(att);
 
-    //assegnazione dell'id del post al div
-    var buttonOnclick = document.createAttribute("onclick");       // Create a "id" attribute
-    buttonOnclick.value = "getPostById(" + id + ")";                           // Set the value of the id attribute
+    var buttonOnclick = document.createAttribute("onclick");
+    buttonOnclick.value = "getPostById(" + id + ")";
     clonedPost.getElementsByClassName("btn btn-primary")[0].setAttributeNode(buttonOnclick);
 
     //compilazione del post
@@ -195,8 +193,6 @@ function showPost(json) {
     clonedPost.getElementsByClassName("card-title")[0].innerHTML = title;
     clonedPost.getElementsByClassName("card-text")[0].innerHTML = text;
     clonedPost.getElementsByClassName("card-footer")[0].innerHTML = date;
-    var comments = clonedPost.getElementsByClassName("overflow-auto")[0];
-    comments.remove();
 
     //caricamento del post nella pagina html
     oldPosts.insertBefore(clonedPost, oldPosts.firstChild);
@@ -256,8 +252,6 @@ function visualPostsJson(json) {
         clonedPost.getElementsByClassName("card-title")[0].innerHTML = title;
         clonedPost.getElementsByClassName("card-text")[0].innerHTML = text;
         clonedPost.getElementsByClassName("card-footer")[0].innerHTML = date;
-        var comments = clonedPost.getElementsByClassName("overflow-auto")[0];
-        comments.remove();
 
         //caricamento del post nella pagina html
         document.getElementById("posts").appendChild(clonedPost);
