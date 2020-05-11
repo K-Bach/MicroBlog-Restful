@@ -7,9 +7,11 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="../js/login.js"></script>
         <script type="text/javascript" src="../js/post.js"></script>
         <script type="text/javascript" src="../js/comment.js"></script>
+        <script type="text/javascript" src="../js/logout.js"></script>
         <title>MicroBlog Bachir</title>
         <style>
             #overlay {
@@ -50,6 +52,15 @@
     </head>
 
     <body onload="checkPostPermission();showPostsList('http://localhost:8080/posts/');">
+
+        <nav class="navbar navbar-light float-right" style="background-color: #17a2b8!important">
+            <button type="button" class="buttonLogout btn-lg btn-light" onclick="logout();">
+                <i class="fa fa-sign-out fa-2x align-middle" aria-hidden="true"></i>
+                <span class="align-middle ml-2">Logout</span>
+            </button>
+        </nav>
+
+
         <div class="jumbotron jumbotron-fluid bg-info text-white text-center">
             <div class="container">
                 <h1 class="display-1">Welcome <span id="userwelcome"></span> to Bachirs Microblog</h1>
