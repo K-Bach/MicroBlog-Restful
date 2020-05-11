@@ -44,13 +44,12 @@
             {
                 location.assign("notLogged.html");
             }
-            
+
         </script>
 
     </head>
 
-    <body onload="checkPostPermission();
-            showPostsList('http://localhost:8080/posts/');">
+    <body onload="checkPostPermission();showPostsList('http://localhost:8080/posts/');">
         <div class="jumbotron jumbotron-fluid bg-info text-white text-center">
             <div class="container">
                 <h1 class="display-1">Welcome <span id="userwelcome"></span> to Bachirs Microblog</h1>
@@ -94,8 +93,13 @@
             </div>
             <div class="comment">
                 <div class="card text-white bg-info mb-3">
-                    <div class="card-header author" style="text-align: left">autore</div>
-                    <div class="card-body ">
+                    <div class="card-header author">
+                        <div class="row">
+                            <div class="autore col-6 text-left"></div>
+                            <div class="data col-6 text-right"></div>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <p class="card-text text" style="text-align: left">testo</p>
                     </div>
                 </div>
@@ -121,7 +125,7 @@
                                         <div class="form-group">
                                             <label for="inputComment" class="row">comment</label>
                                             <div class="row">
-                                                <input type="text" class="commenttext form-control col-9" name="text" id="inputComment" placeholder="nice post...">
+                                                <input type="text" class="commenttext form-control col-9" name="text" placeholder="nice post...">
                                                 <button type="submit" class="createComment btn btn-primary col-2 ml-auto" >submit</button>
                                             </div>
                                         </div>

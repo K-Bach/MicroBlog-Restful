@@ -34,8 +34,19 @@ function createPost(address, form) {
     var postText = form.postText.value;
     var autore = {"id": Number(getCookie("userId"))};
     var date = new Date();
+    var month = '' + (date.getMonth() + 1);
+    var day = '' + date.getDate();
+    var year = date.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    var formatted_date = year + "-" + month + "-" + day;
+    
     xmlhttp.open("POST", address, true);
-    var post = JSON.stringify({"titolo": title, "autore": autore, "dataOra": date, "testo": postText});
+    var post = JSON.stringify({"titolo": title, "autore": autore, "dataOra": formatted_date, "testo": postText});
     xmlhttp.setRequestHeader("Content-type", "application/json");
     xmlhttp.send(post);
 }
@@ -140,23 +151,25 @@ function getCommentsByPost(parsedPostJson, postId) {
                 //var id = parsedPostJson.id;
                 var autore = parsedCommentsJson.response[i].autore.username;
                 var testo = parsedCommentsJson.response[i].testo;
+                var dataOra = parsedCommentsJson.response[i].dataOra;
 
                 //clonazione del comment template
                 var clonedComment = templateNodes[3].cloneNode(true);
 
                 //compilazione del commento
-                clonedComment.getElementsByClassName("card-header")[0].innerHTML = autore;
+                clonedComment.getElementsByClassName("autore")[0].innerHTML = autore;
                 clonedComment.getElementsByClassName("card-text")[0].innerHTML = testo;
+                clonedComment.getElementsByClassName("data")[0].innerHTML = dataOra;
                 clonedPostWithComments.getElementsByClassName("overflow-auto")[0].appendChild(clonedComment);
             }
             //caricamento del post nella pagina html
             document.getElementById("overlay").appendChild(clonedPostWithComments);
-            var actionAtt = document.createAttribute("action");    
-            actionAtt.value = "javascript:createComment(" + id + ");"; 
+            var actionAtt = document.createAttribute("action");
+            actionAtt.value = "javascript:createComment(" + id + ");";
             var form = document.getElementsByName("formComment")[1];
-            form.setAttributeNode(actionAtt); 
+            form.setAttributeNode(actionAtt);
             document.getElementById("overlay").style.display = "block";
-            
+
 
         }
     };
