@@ -74,6 +74,6 @@ function showComment(parsedCommentJson) {
     clonedComment.getElementsByClassName("card-text")[0].innerHTML = testo;
     clonedComment.getElementsByClassName("data")[0].innerHTML = dataOra;
     
-    document.getElementsByClassName("overflow-auto")[1].insertBefore(clonedComment, document.getElementsByClassName("overflow-auto")[1].childNodes[0]);
+    document.getElementsByClassName("commentsField1")[1].insertBefore(clonedComment, document.getElementsByClassName("commentsField1")[1].childNodes[0]);
 }
 

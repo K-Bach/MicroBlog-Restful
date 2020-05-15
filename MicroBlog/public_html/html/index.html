@@ -15,11 +15,14 @@
     </head>
     <body>
 
-        <a href="blogUsers.html">click here for users list</a> <br>
-        <a href="posts.html">click here for posts list</a> <br>
-        <a href="comments.html">click here for comments list</a>
-
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active" href="blog.html">If you just want to se the posts and the comments click here</a>
+            </li>
+        </ul>
+        
         <hr>
+        
         <h2>LOGIN</h2>
         <form name="formLogin">
             <div class="form-group">
@@ -32,7 +35,7 @@
             </div>
             <input type="button" value="Login" onClick="login()">
         </form>
-        
+
         <hr>
         <h2>REGISTRATION</h2>
         <form name="formRegister">
@@ -46,13 +49,12 @@
             </div>
             <input type="button" value="Register" onClick="register('http://localhost:8080/users/')">
         </form>
-        
-        <br>
-        
+
         <div id="status"></div>
         <div id="risultato-raw"></div>
         <hr>
         <div id="risultato"></div>
+
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

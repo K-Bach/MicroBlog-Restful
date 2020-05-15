@@ -32,23 +32,51 @@ function createPost(address, form) {
     };
     var title = form.title.value;
     var postText = form.postText.value;
-    var autore = {"id": Number(getCookie("userId"))};
-    var date = new Date();
-    var month = '' + (date.getMonth() + 1);
-    var day = '' + date.getDate();
-    var year = date.getFullYear();
+    let re = /([^\s]+([\s][^\s]+)*)+/;
+    var resTitle = re.test(title);
+    var resPostText = re.test(postText);
 
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
+    if (title === "")
+    {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                + "Title field  must not be null"
+                + "</div>";
+    } else if (postText === "")
+    {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                + "Text field  must not be null"
+                + "</div>";
+    } else if (!resTitle)
+    {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                + "Title field  must not contain only space characters"
+                + "</div>";
+    } else if (!resPostText)
+    {
+        document.getElementById("status").innerHTML = "<div class=\"alert alert-danger\" role=\"alert\">"
+                + "Text field  must not contain only space characters"
+                + "</div>";
+    } else
+    {
 
-    var formatted_date = year + "-" + month + "-" + day;
-    
-    xmlhttp.open("POST", address, true);
-    var post = JSON.stringify({"titolo": title, "autore": autore, "dataOra": formatted_date, "testo": postText});
-    xmlhttp.setRequestHeader("Content-type", "application/json");
-    xmlhttp.send(post);
+        var autore = {"id": Number(getCookie("userId"))};
+        var date = new Date();
+        var month = '' + (date.getMonth() + 1);
+        var day = '' + date.getDate();
+        var year = date.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        var formatted_date = year + "-" + month + "-" + day;
+
+        xmlhttp.open("POST", address, true);
+        var post = JSON.stringify({"titolo": title, "autore": autore, "dataOra": formatted_date, "testo": postText});
+        xmlhttp.setRequestHeader("Content-type", "application/json");
+        xmlhttp.send(post);
+    }
 }
 
 function getPost(address) {
@@ -110,7 +138,68 @@ function showPostWithComments(post) {
     getCommentsByPost(post, id);
 
 }
+function getCommentsByPostNotLogged(parsedPostJson, postId) {
 
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {  // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4 && this.status === 200) {
+
+            var parsedCommentsJson = JSON.parse(this.responseText);
+
+            var httpCode = parsedCommentsJson.server;
+
+            //valori del post presi dal json
+            var id = JSON.parse(parsedPostJson).id;
+            var title = JSON.parse(parsedPostJson).titolo;
+            var author = JSON.parse(parsedPostJson).autore.username;
+            var date = JSON.parse(parsedPostJson).dataOra;
+            var text = JSON.parse(parsedPostJson).testo;
+
+            //clonazione del post template
+            var templateNodes = document.getElementById("templates").childNodes;
+            var clonedPostWithCommentsWithoutFormComment = templateNodes[7].cloneNode(true);
+
+            //compilazione del post
+            clonedPostWithCommentsWithoutFormComment.getElementsByClassName("card-header")[0].innerHTML = author;
+            clonedPostWithCommentsWithoutFormComment.getElementsByClassName("card-title")[0].innerHTML = title;
+            clonedPostWithCommentsWithoutFormComment.getElementsByClassName("card-text")[0].innerHTML = text;
+            clonedPostWithCommentsWithoutFormComment.getElementsByClassName("card-footer")[0].innerHTML = date;
+
+            for (i = parsedCommentsJson.response.length - 1; i >= 0; i--)
+            {
+                //valori del commento presi dal json
+                //var id = parsedPostJson.id;
+                var autore = parsedCommentsJson.response[i].autore.username;
+                var testo = parsedCommentsJson.response[i].testo;
+                var dataOra = parsedCommentsJson.response[i].dataOra;
+
+                //clonazione del comment template
+                var clonedComment = templateNodes[3].cloneNode(true);
+
+                //compilazione del commento
+                clonedComment.getElementsByClassName("autore")[0].innerHTML = autore;
+                clonedComment.getElementsByClassName("card-text")[0].innerHTML = testo;
+                clonedComment.getElementsByClassName("data")[0].innerHTML = dataOra;
+                clonedPostWithCommentsWithoutFormComment.getElementsByClassName("overflow-auto")[0].appendChild(clonedComment);
+            }
+            //caricamento del post nella pagina html
+            document.getElementById("overlay").appendChild(clonedPostWithCommentsWithoutFormComment);
+            document.getElementById("overlay").style.display = "block";
+
+
+        }
+    };
+    xmlhttp.open("GET", "http://localhost:8080/posts/" + postId + "/comments", true);
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    xmlhttp.send(parsedPostJson);
+}
 function getCommentsByPost(parsedPostJson, postId) {
 
     if (window.XMLHttpRequest) {
@@ -236,7 +325,6 @@ function showPostsList(address) {
 
 function visualPostsJson(json) {
     var parsedJson = JSON.parse(json);
-    var httpCode = parsedJson.server;
 
     var posts = "";
     for (i = parsedJson.response.length - 1; i >= 0; i--) {

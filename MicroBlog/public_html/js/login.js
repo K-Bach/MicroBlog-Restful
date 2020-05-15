@@ -85,6 +85,23 @@ function visualJson(json) {
     }
 }
 
+function checkPermissions()
+{
+    var userId = getCookie("userId");
+    if (userId === "" || userId === "0")
+    {
+        document.getElementById("logoutSpan").innerHTML = "Back";
+        document.getElementById("divFormPost").innerHTML = "";
+        document.getElementById("risultato").innerHTML = "";
+        document.getElementById("risultato-raw").innerHTML = "";
+        showPostsListNotLogged('http://localhost:8080/posts/');
+    } else //se l'utente è registrato
+    {
+        checkPostPermission();
+        showPostsList('http://localhost:8080/posts/');
+    }
+}
+
 function checkPostPermission()
 {
     var permission = getCookie("enablePost");
@@ -105,6 +122,103 @@ function checkPostPermission()
                 + '</div>'
                 + '</form>';
     }
+
+}
+
+function showPostsListNotLogged(address) {
+
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {  // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4 && this.status === 200) {
+
+            visualPostsJsonNotLogged(this.responseText);
+
+        }
+    };
+    xmlhttp.open("GET", address, true);
+    xmlhttp.send();
+}
+
+function visualPostsJsonNotLogged(json) {
+    var parsedJson = JSON.parse(json);
+
+    var posts = "";
+    for (i = parsedJson.response.length - 1; i >= 0; i--) {
+
+        //valori del post presi dal json
+        var id = parsedJson.response[i].id;
+        var title = parsedJson.response[i].titolo;
+        var author = parsedJson.response[i].autore.username;
+        var date = parsedJson.response[i].dataOra;
+        var text = parsedJson.response[i].testo;
+
+        //clonazione del post template
+        var postTemplateNodes = document.getElementById("templates").childNodes;
+        var clonedPost = postTemplateNodes[1].cloneNode(true);
+
+        //assegnazione dell'id del post al div
+        var att = document.createAttribute("id");       // Create a "id" attribute
+        att.value = id;                           // Set the value of the id attribute
+        clonedPost.setAttributeNode(att);
+
+        //assegnazione dell'id del post al div
+        var buttonOnclick = document.createAttribute("onclick");       // Create a "id" attribute
+        buttonOnclick.value = "getPostByIdNotLogged(" + id + ")";                           // Set the value of the id attribute
+        clonedPost.getElementsByClassName("btn btn-primary")[0].setAttributeNode(buttonOnclick);
+
+        //compilazione del post
+        clonedPost.getElementsByClassName("card-header")[0].innerHTML = author;
+        clonedPost.getElementsByClassName("card-title")[0].innerHTML = title;
+        clonedPost.getElementsByClassName("card-text")[0].innerHTML = text;
+        clonedPost.getElementsByClassName("card-footer")[0].innerHTML = date;
+
+        //caricamento del post nella pagina html
+        document.getElementById("posts").appendChild(clonedPost);
+    }
+}
+function getPostByIdNotLogged(postId) {
+
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {  // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4) {
+            switch (this.status) {
+                case 200:
+                    showPostWithCommentsNotLogged(this.responseText);
+                    break;
+            }
+        }
+    };
+    xmlhttp.open("GET", "http://localhost:8080/posts/" + postId, true);
+    xmlhttp.send();
+}
+
+function showPostWithCommentsNotLogged(post) {
+
+    var parsedPostJson = JSON.parse(post);
+
+    var id = parsedPostJson.response.id;
+    var title = parsedPostJson.response.titolo;
+    var author = parsedPostJson.response.autore;
+    var date = parsedPostJson.response.dataOra;
+    var text = parsedPostJson.response.testo;
+
+    var post = JSON.stringify({"id": id, "titolo": title, "autore": author, "dataOra": date, "testo": text});
+
+    getCommentsByPostNotLogged(post, id);
 
 }
 

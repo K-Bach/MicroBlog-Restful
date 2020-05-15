@@ -39,24 +39,14 @@
             }
         </style>
 
-        <!--verifica che l'utente sia loggato-->
-        <script>
-            var userId = getCookie("userId");
-            if (!userId)
-            {
-                location.assign("notLogged.html");
-            }
-
-        </script>
-
     </head>
 
-    <body onload="checkPostPermission();showPostsList('http://localhost:8080/posts/');">
+    <body onload="checkPermissions();">
 
         <nav class="navbar navbar-light float-right" style="background-color: #17a2b8!important">
             <button type="button" class="buttonLogout btn-lg btn-light" onclick="logout();">
                 <i class="fa fa-sign-out fa-2x align-middle" aria-hidden="true"></i>
-                <span class="align-middle ml-2">Logout</span>
+                <span id="logoutSpan" class="align-middle ml-2">Logout</span>
             </button>
         </nav>
 
@@ -68,11 +58,12 @@
             </div>
         </div>
         <div id="divFormPost" ></div>
+        <div id="status"></div>
         <hr>
         <div id="risultato-raw"></div>
-        <hr>
+        
         <div id="risultato"></div>
-        <hr>
+        
         <div id="posts"></div>
 
         <div id="templates" style="display: none">
@@ -141,7 +132,35 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light border border-secondary rounded-top" style="max-height: 500px;"></div>
+                                    <div class="commentsField1 overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light border border-secondary rounded-top" style="max-height: 500px;"></div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    date
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="postWithCommentsWithoutFormComment">
+                <div class="container">
+                    <div id='postWithCommentsId' style="display: none;"></div>
+                    <div class="row justify-content-center">
+                        <div class="col col-md-8">
+                            <div class="card text-center">
+                                <div class="card-header"  style="text-align: left">
+                                    author
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        title
+                                    </h5>
+                                    <p class="card-text" style="text-align: left">
+                                        text
+                                    </p>
+                                    <hr>
+                                    <div class="commentsField2 overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light border border-secondary rounded-top" style="max-height: 500px;"></div>
                                 </div>
                                 <div class="card-footer text-muted">
                                     date
